@@ -1104,6 +1104,15 @@
         }
 
         function restart() {
+            // Отправляем счёт в бота (если игра открыта в Telegram)
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.sendData) {
+                try {
+                    window.Telegram.WebApp.sendData(JSON.stringify({ score: score }));
+                } catch (e) {
+                    console.log('Не в Telegram, счёт не отправлен');
+                }
+            }
+            
             score = 0;
             scoreEl.textContent = 'Счёт: 0';
             obstacles = [];
