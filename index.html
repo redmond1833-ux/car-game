@@ -29,6 +29,15 @@
             border-color: #FF6B00 !important;
             background: #3a2a1a !important;
         }
+
+        .carOption img {
+            width: 120px;
+            height: 70px;
+            object-fit: contain;
+            flex-shrink: 0;
+            image-rendering: pixelated;
+        }
+
         canvas {
             background: #87CEEB;
             border-radius: 10px;
@@ -47,79 +56,155 @@
             color: #888;
             margin-top: 5px;
         }
+        .menuBtn {
+            padding: 15px 24px;
+            background: #2a2a2a;
+            color: white;
+            border: 2px solid #444;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            touch-action: manipulation;
+            transition: all 0.2s;
+        }
+        
+        .menuBtn:hover,
+        .menuBtn:active {
+            border-color: #FF6B00;
+            background: #3a2a1a;
+        }
+        
+        .menuBtn.primary {
+            background: #FF6B00;
+            border-color: #FF6B00;
+            color: white;
+        }
+        
+        .menuBtn.primary:hover,
+        .menuBtn.primary:active {
+            background: #FF8A33;
+        }
+                #changeCarBtn {
+            margin-top: 15px;
+            padding: 10px 24px;
+            background: #2a2a2a;
+            color: white;
+            border: 2px solid #FF6B00;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            touch-action: manipulation;
+            transition: all 0.2s;
+        }
+        
+        #changeCarBtn:hover,
+        #changeCarBtn:active {
+            background: #3a2a1a;
+        }
     </style>
 </head>
 <body>
     <div id="gameContainer">
-        <!-- Экран выбора машины -->
-        <div id="carSelect" style="
+        
+        <!-- ===== ЭКРАН МЕНЮ ===== -->
+        <div id="mainMenu" style="
             background: #1a1a1a;
             border-radius: 10px;
-            padding: 30px;
+            padding: 25px;
             box-shadow: 0 0 30px rgba(255, 107, 0, 0.5);
-            display: block;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
         ">
-            <h1 style="color: #FF6B00; margin: 0 0 10px; font-size: 32px;">🚗 Выбери машину</h1>
-            <p style="color: #888; margin: 0 0 25px;">На чём будешь покорять город?</p>
+            <h1 style="color: #FF6B00; margin: 0 0 10px; font-size: 28px;">🚗 Мой Гараж</h1>
+            <p style="color: #888; margin: 0 0 25px; font-size: 14px;">Пиксельная гонка</p>
             
-            <div style="display: flex; gap: 20px; justify-content: center;">
-                <div class="carOption" data-car="mazda" style="
-                    background: #2a2a2a;
-                    border: 3px solid #444;
-                    border-radius: 10px;
-                    padding: 15px;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                    width: 150px;
-                ">
-                    <img src="assets/car_mazda.png" style="width: 100%; height: 80px; object-fit: contain;">
-                    <div style="color: white; margin-top: 10px; font-weight: bold;">Mazda CX-5</div>
-                </div>
-                
-                <div class="carOption" data-car="toyota" style="
-                    background: #2a2a2a;
-                    border: 3px solid #444;
-                    border-radius: 10px;
-                    padding: 15px;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                    width: 150px;
-                ">
-                    <img src="assets/car_toyota.png" style="width: 100%; height: 80px; object-fit: contain;">
-                    <div style="color: white; margin-top: 10px; font-weight: bold;">Land Cruiser 250</div>
-                </div>
-                
-                <div class="carOption" data-car="honda" style="
-                    background: #2a2a2a;
-                    border: 3px solid #444;
-                    border-radius: 10px;
-                    padding: 15px;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                    width: 150px;
-                ">
-                    <img src="assets/car_honda.png" style="width: 100%; height: 80px; object-fit: contain;">
-                    <div style="color: white; margin-top: 10px; font-weight: bold;">Honda Fit</div>
-                </div>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <button class="menuBtn" data-action="garage">🏠 Гараж</button>
+                <button class="menuBtn" data-action="records">🏆 Рекорды</button>
+                <button class="menuBtn" data-action="safety">📖 Техника безопасности</button>
+                <button class="menuBtn primary" data-action="play">🎮 Играть</button>
             </div>
         </div>
 
-        <!-- Сама игра -->
+        <!-- ===== ЭКРАН ГАРАЖА (ВЫБОР МАШИНЫ) ===== -->
+        <div id="garageScreen" style="display: none; background: #1a1a1a; border-radius: 10px; padding: 20px; box-shadow: 0 0 30px rgba(255, 107, 0, 0.5); width: 100%; max-width: 500px; max-height: 100vh; overflow-y: auto;">
+            <h1 style="color: #FF6B00; margin: 0 0 10px; font-size: 24px; text-align: center;">🏠 Мой гараж</h1>
+            <p style="color: #888; margin: 0 0 20px; text-align: center; font-size: 14px;">Выбери машину</p>
+            
+            <div class="carList">
+                <div class="carOption" data-car="mazda">
+                    <img src="assets/car_mazda.png" alt="Mazda">
+                    <div class="carName">Mazda CX-5</div>
+                </div>
+                <div class="carOption" data-car="toyota">
+                    <img src="assets/car_toyota.png" alt="Toyota">
+                    <div class="carName">Land Cruiser 250</div>
+                </div>
+                <div class="carOption" data-car="honda">
+                    <img src="assets/car_honda.png" alt="Honda">
+                    <div class="carName">Honda Fit</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="menuBtn" data-action="backToMenu">🔙 Назад в меню</button>
+            </div>
+        </div>
+
+        <!-- ===== ЭКРАН РЕКОРДОВ ===== -->
+        <div id="recordsScreen" style="display: none; background: #1a1a1a; border-radius: 10px; padding: 20px; box-shadow: 0 0 30px rgba(255, 107, 0, 0.5); width: 100%; max-width: 400px;">
+            <h1 style="color: #FF6B00; margin: 0 0 20px; font-size: 24px; text-align: center;">🏆 Рекорды</h1>
+            
+            <div id="recordsList" style="color: white; margin-bottom: 20px;">
+                <p style="text-align: center; color: #888;">Загрузка...</p>
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="menuBtn" data-action="backToMenu">🔙 Назад в меню</button>
+            </div>
+        </div>
+
+        <!-- ===== ЭКРАН ТЕХНИКИ БЕЗОПАСНОСТИ ===== -->
+        <div id="safetyScreen" style="display: none; background: #1a1a1a; border-radius: 10px; padding: 20px; box-shadow: 0 0 30px rgba(255, 107, 0, 0.5); width: 100%; max-width: 500px; max-height: 100vh; overflow-y: auto;">
+            <h1 style="color: #FF6B00; margin: 0 0 20px; font-size: 24px; text-align: center;">📖 Техника безопасности</h1>
+            
+            <div style="color: white; font-size: 14px; line-height: 1.6;">
+                <p><b>🎮 Управление:</b></p>
+                <p>Тапни в любом месте экрана — машина прыгнет.</p>
+                
+                <p style="margin-top: 20px;"><b>🎯 Цель игры:</b></p>
+                <p>Прыгай через конусы и шины, собирай монетки и не врезайся!</p>
+                
+                <p style="margin-top: 20px;"><b>💰 Монетки:</b></p>
+                <p>Каждая монетка даёт <b>+50 очков</b>.</p>
+                
+                <p style="margin-top: 20px;"><b>⛽ Правила:</b></p>
+                <p>• За каждое препятствие — <b>+10 очков</b></p>
+                <p>• При столкновении игра заканчивается</p>
+                <p>• Чем дальше едешь — тем быстрее</p>
+                
+                <p style="margin-top: 20px;"><b>🚗 Машины:</b></p>
+                <p>Выбирай машину в гараже. У каждой свои колёса и скорость.</p>
+                
+                <p style="margin-top: 20px;"><b>🌆 Сценарии:</b></p>
+                <p>Каждые 500 очков меняется время суток: день → закат → ночь → рассвет.</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="menuBtn" data-action="backToMenu">🔙 Назад в меню</button>
+            </div>
+        </div>
+
+        <!-- ===== ЭКРАН ИГРЫ ===== -->
         <div id="gameArea" style="display: none;">
             <canvas id="game" width="800" height="400"></canvas>
             <div id="score">Счёт: 0</div>
-            <div id="hint">Пробел или тап — прыжок</div>
-            <button id="changeCarBtn" style="
-                margin-top: 15px;
-                padding: 10px 20px;
-                background: #2a2a2a;
-                color: white;
-                border: 2px solid #FF6B00;
-                border-radius: 8px;
-                cursor: pointer;
-                font-size: 14px;
-                font-weight: bold;
-            ">🚗 Сменить машину</button>
+            <div id="hint">Тап — прыжок</div>
+            <button id="changeCarBtn">🔙 В меню</button>
         </div>
     </div>
 
@@ -184,26 +269,68 @@
             });
         });
         
-        // Кнопка старта (двойной клик по выбранной машине)
+        // ============ УПРАВЛЕНИЕ ЭКРАНАМИ ============
+        
+        const screens = {
+            menu: document.getElementById('mainMenu'),
+            garage: document.getElementById('garageScreen'),
+            records: document.getElementById('recordsScreen'),
+            safety: document.getElementById('safetyScreen'),
+            game: document.getElementById('gameArea'),
+        };
+        
+        function showScreen(name) {
+            Object.values(screens).forEach(s => s.style.display = 'none');
+            if (screens[name]) screens[name].style.display = (name === 'game') ? 'block' : 'block';
+        }
+        
+        // Обработчик кнопок меню
+        document.querySelectorAll('.menuBtn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const action = btn.dataset.action;
+                
+                if (action === 'garage') {
+                    showScreen('garage');
+                } else if (action === 'records') {
+                    showScreen('records');
+                    loadRecords();
+                } else if (action === 'safety') {
+                    showScreen('safety');
+                } else if (action === 'play') {
+                    startGame();
+                } else if (action === 'backToMenu') {
+                    showScreen('menu');
+                }
+            });
+        });
+        
+        // Выбор машины — один клик
+        document.querySelectorAll('.carOption').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.carOption').forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedCar = option.dataset.car;
+            });
+        });
+        
+        // Двойной клик по машине — сразу играть
         document.querySelectorAll('.carOption').forEach(option => {
             option.addEventListener('dblclick', () => {
+                selectedCar = option.dataset.car;
                 startGame();
             });
         });
         
-        // Или через пробел на экране выбора
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && !gameStarted) {
-                e.preventDefault();
-                startGame();
-            }
-        });
-        
+        // ============ ЗАГРУЗКА РЕКОРДОВ (заглушка) ============
+        function loadRecords() {
+            const list = document.getElementById('recordsList');
+            list.innerHTML = '<p style="text-align: center; color: #888;">Рекорды появятся после подключения к боту.<br><br>А пока — играй и ставь свои!</p>';
+        }
+
         function startGame() {
             if (gameStarted) return;
             gameStarted = true;
             
-            // Загружаем картинку выбранной машины
             const paths = {
                 mazda: 'assets/car_mazda.png',
                 toyota: 'assets/car_toyota.png',
@@ -211,11 +338,7 @@
             };
             car.image.src = paths[selectedCar];
             
-            // Скрываем меню, показываем игру
-            document.getElementById('carSelect').style.display = 'none';
-            document.getElementById('gameArea').style.display = 'block';
-            
-            // Фокус на canvas для управления
+            showScreen('game');
             document.getElementById('game').focus();
         }
 
@@ -350,11 +473,19 @@
                 jump();
             }
         });
-        canvas.addEventListener('click', jump);
-        canvas.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            jump();
+        // Тап в любом месте экрана = прыжок (только во время игры)
+        document.addEventListener('click', (e) => {
+            if (gameStarted && !e.target.closest('button')) {
+                jump();
+            }
         });
+        
+        document.addEventListener('touchstart', (e) => {
+            if (gameStarted && !e.target.closest('button')) {
+                e.preventDefault();
+                jump();
+            }
+        }, { passive: false });
 
         // ============ ОБНОВЛЕНИЕ ============
         function update() {
@@ -1167,9 +1298,6 @@
 
         document.getElementById('changeCarBtn').addEventListener('click', () => {
             gameStarted = false;
-            document.getElementById('gameArea').style.display = 'none';
-            document.getElementById('carSelect').style.display = 'block';
-            // Сбрасываем игру
             gameOver = false;
             score = 0;
             scoreEl.textContent = 'Счёт: 0';
@@ -1178,6 +1306,7 @@
             car.y = GROUND_Y - car.height;
             car.vy = 0;
             car.jumping = false;
+            showScreen('menu');
         });
 
         function loop() {
