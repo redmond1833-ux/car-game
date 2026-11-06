@@ -729,6 +729,17 @@
                     car.y + car.height > obs.y
                 ) {
                     gameOver = true;
+                    
+                    // Отправляем счёт в бота
+                    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.sendData) {
+                        try {
+                            window.Telegram.WebApp.sendData(JSON.stringify({ score: score }));
+                            console.log('Счёт отправлен:', score);
+                        } catch (e) {
+                            console.log('Ошибка отправки:', e);
+                        }
+                    }
+                    
                     flashTimer = 20;
                 }
             }
@@ -1232,33 +1243,6 @@
                 ctx.fillText('Пробел или тап — заново', W/2, H/2 + 70);
                 ctx.textAlign = 'left';
             }
-        }
-
-        function restart() {
-            // Отправляем счёт в бота (если игра открыта в Telegram)
-            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.sendData) {
-                try {
-                    window.Telegram.WebApp.sendData(JSON.stringify({ score: score }));
-                } catch (e) {
-                    console.log('Не в Telegram, счёт не отправлен');
-                }
-            }
-            
-            score = 0;
-            scoreEl.textContent = 'Счёт: 0';
-            obstacles = [];
-            coins = [];
-            gameOver = false;
-            spawnTimer = 0;
-            coinSpawnTimer = 0;
-            flashTimer = 0;
-            roadOffset = 0;
-            car.y = GROUND_Y - car.height;
-            car.vy = 0;
-            car.jumping = false;
-            car.hangFrames = 0;
-            car.rotation = 0;
-            car.wheelRotation = 0;
         }
 
         function drawWheel(x, y, radius, rotation) {
